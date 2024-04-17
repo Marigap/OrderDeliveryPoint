@@ -23,15 +23,4 @@ class OrderInfo extends Model
         return $this->belongsTo(ClientInfo::class);
     }
 
-    /*
-    public static function create(PostDeliveryRequest $request, ClientInfo $clientInfo)
-    {
-        $new_order = new OrderInfo;
-        $new_order->client_info_id = $clientInfo->client_info_id;
-        $new_order->order_name = $request->order_name;
-        $new_order->order_weight = $request->order_weight;
-        return $new_order;
-    }
-    */
-
 }
