@@ -231,6 +231,7 @@ components:
         - client_info
         - order_info
         - status
+        - current_location
         - need_notify
         - started_at
         - updated_at
