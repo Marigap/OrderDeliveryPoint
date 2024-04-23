@@ -4,5 +4,5 @@ Content-Type: application/json
 
 {
     "status": "in_transit",
-    "current_location": "Zelenograd"
+    "current_location": "Zelik"
 }

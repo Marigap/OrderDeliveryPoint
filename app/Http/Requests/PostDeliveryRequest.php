@@ -30,11 +30,8 @@ class PostDeliveryRequest extends FormRequest
             "client_info.email" => "required|unique:client_infos,email|email",
             "order_info.order_name" => "required",
             "order_info.order_weight" => "required",
-            "status" => "required|in:accepted,processing,in_transit,delivered,picked_up",
             "current_location" => "required",
             "need_notify" => "required",
-            "created_at" => "required",
-            "updated_at" => "required",
         ];
     }
 }
