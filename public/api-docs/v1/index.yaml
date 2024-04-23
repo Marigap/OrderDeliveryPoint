@@ -1,77 +1,278 @@
-openapi: 3.0.3
+openapi: "3.0.0"
 info:
-  title: Ensi Backend Skeleton (Replace me)
+  version: 1.0.0
+  title: Order Delivery Point API
   contact:
     name: API Support
-    url: https://ensi.tech/contacts
-    email: mail@greensight.ru
-  version: 1.0.0
-  description: Ensi Backend Skeleton Description (Replace me)
+    url: https://non.existing/contacts
+    email: mail@miet.ru
+  description: OrderDeliveryPoint service API for communication with web client
 servers:
-  - url: /api/v1
+  - url: http://localhost:8000/OrderDeliveryAPI/v1
+    description: OrderDeliveryPoint API server
 tags:
-  - name: examples
-    description: Тэг-пример
+  - name: orderDeliveries
+    description: Order deliveries related actions tag
 paths:
-  /examples/{id}:
+  /order-deliveries:
     get:
-      tags:
-        - examples
-      operationId: getExample
-      x-lg-handler: 'App\Http\ApiV1\Modules\Foos\Controllers\FoosController@get'
-      x-lg-route-name: 'getExample'
+      summary: List all order deliveries
+      description: List all order deliveries
+      operationId: getAllOrderDeliveries
+      x-lg-handler: 'App\Http\ApiV1\Modules\OrderDeliveries\Controllers\DeliveryInfosController@index'
+      x-lg-route-name: 'getAllOrderDeliveries'
       x-lg-skip-request-generation: true
-      summary: Получение объекта типа Example
-      description: Получение объекта типа Example
-      parameters:
-        - $ref: '#/components/parameters/PathId'
-        - $ref: '#/components/parameters/QueryInclude'
+      tags:
+        - orderDeliveries
       responses:
-        #"200":
-          #description: Успешный ответ
-          # content:
-          #  application/json:
-          #    schema:
-          #      $ref: './customers.yaml#/CustomerResponse'
-        "404":
-          $ref: '#/components/responses/NotFound'
-        "500":
-          $ref: '#/components/responses/ServerError'
+        '200':
+          description: Successfully get all order deliveries
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeliveryInfos"
+        'default':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Add new order delivery
+      description: Add new order delivery
+      operationId: postOrderDelivery
+      x-lg-handler: 'App\Http\ApiV1\Modules\OrderDeliveries\Controllers\DeliveryInfosController@post'
+      x-lg-route-name: 'postOrderDelivery'
+      x-lg-skip-request-generation: true
+      tags:
+        - orderDeliveries
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeliveryInfo"
+      responses:
+        '201':
+          description: Successfully add new order delivery
+        '400':
+          description: Bad request from client received
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        'default':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /order-deliveries/{delivery_id}:
+    get:
+      summary: Get order delivery by delivery id
+      description: Get order delivery by delivery id
+      operationId: getOrderDeliveryById
+      x-lg-handler: 'App\Http\ApiV1\Modules\OrderDeliveries\Controllers\DeliveryInfosController@get'
+      x-lg-route-name: 'getOrderDeliveryById'
+      x-lg-skip-request-generation: true
+      tags:
+        - orderDeliveries
+      parameters:
+        - name: delivery_id
+          in: path
+          required: true
+          description: order delivery id
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully get the order delivery
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeliveryInfo"
+        '404':
+          description: Order delivery with such id doesn't exist
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        'default':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      summary: Update order delivery status and location by delivery id
+      description: Update order delivery status and location by delivery id
+      operationId: updateOrderDeliveryById
+      x-lg-handler: 'App\Http\ApiV1\Modules\OrderDeliveries\Controllers\DeliveryInfosController@update'
+      x-lg-route-name: 'updateOrderDeliveryById'
+      x-lg-skip-request-generation: true
+      tags:
+        - orderDeliveries
+      parameters:
+        - name: delivery_id
+          in: path
+          required: true
+          description: order delivery id of order delivery that need to update
+          schema:
+            type: integer
+            format: int64
+        - name: status
+          in: query
+          description: New status for order delivery
+          schema:
+            type: string
+            enum:
+              - accepted
+              - processing
+              - in_transit
+              - delivered
+              - picked_up
+        - name: current_location
+          in: query
+          description: New current_location for order delivery
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully updated the order delivery
+        '404':
+          description: Order delivery with such id doesn't exist
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        'default':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Delete order delivery by delivery id
+      description: Delete order delivery by delivery id, considered to do it when order is picked up from order delivery point
+      operationId: deleteOrderDeliveryById
+      x-lg-handler: 'App\Http\ApiV1\Modules\OrderDeliveries\Controllers\DeliveryInfosController@delete'
+      x-lg-route-name: 'deleteOrderDeliveryById'
+      x-lg-skip-request-generation: true
+      tags:
+        - orderDeliveries
+      parameters:
+        - name: delivery_id
+          in: path
+          required: true
+          description: order delivery id
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully deleted the order delivery
+        '404':
+          description: Order delivery with such id doesn't exist
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        'default':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+
 components:
-  parameters:
-    QueryInclude:
-      $ref: './common_parameters.yaml#/QueryInclude'
-    PathId:
-      $ref: './common_parameters.yaml#/PathId'
   schemas:
-    EmptyDataResponse:
+    ClientInfo:
       type: object
-      properties:
-        data:
-          type: object
-          nullable: true
-        meta:
-          type: object
       required:
-          - data
-    PaginationTypeEnum:
-      $ref: './common_schemas.yaml#/PaginationTypeEnum'
-  responses:
-    BadRequest:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: './errors.yaml#/ErrorResponse'
-    NotFound:
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            $ref: './errors.yaml#/ErrorResponse'
-    ServerError:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: './errors.yaml#/ErrorResponse'
+        - id
+        - client_name
+        - phone
+        - email
+      properties:
+        id:
+          type: integer
+          format: int64
+        client_name:
+          type: string
+        phone:
+          type: string
+          format: phone
+          pattern: 7\d{10}
+        email:
+          type: string
+          format: email
+    OrderInfo:
+      type: object
+      required:
+        - id
+        - order_name
+        - order_weight
+      properties:
+        id:
+          type: integer
+          format: int64
+        order_name:
+          type: string
+        order_weight:
+          type: integer
+          format: float
+    DeliveryInfo:
+      type: object
+      required:
+        - id
+        - client_info
+        - order_info
+        - status
+        - current_location
+        - need_notify
+        - started_at
+        - updated_at
+      properties:
+        id:
+          type: integer
+          format: int64
+        client_info:
+          $ref: '#/components/schemas/ClientInfo'
+        order_info:
+          $ref: '#/components/schemas/OrderInfo'
+        status:
+          type: string
+          enum:
+            - accepted
+            - processing
+            - in_transit
+            - delivered
+            - picked_up
+        current_location:
+          type: string
+        need_notify:
+          type: boolean
+        started_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    DeliveryInfos:
+      type: array
+      items:
+        $ref: "#/components/schemas/DeliveryInfo"
+
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+        message:
+          type: string

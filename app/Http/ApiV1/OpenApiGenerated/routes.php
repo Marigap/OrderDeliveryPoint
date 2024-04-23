@@ -5,7 +5,11 @@
  * Do NOT edit it manually. Run `php artisan openapi:generate-server`.
  */
 
-use App\Http\ApiV1\Modules\Foos\Controllers\FoosController;
+use App\Http\ApiV1\Modules\OrderDeliveries\Controllers\DeliveryInfosController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('examples/{id}', [FoosController::class, 'get'])->name('getExample');
+Route::get('order-deliveries', [DeliveryInfosController::class, 'index'])->name('getAllOrderDeliveries');
+Route::post('order-deliveries', [DeliveryInfosController::class, 'post'])->name('postOrderDelivery');
+Route::get('order-deliveries/{delivery_id}', [DeliveryInfosController::class, 'get'])->name('getOrderDeliveryById');
+Route::put('order-deliveries/{delivery_id}', [DeliveryInfosController::class, 'update'])->name('updateOrderDeliveryById');
+Route::delete('order-deliveries/{delivery_id}', [DeliveryInfosController::class, 'delete'])->name('deleteOrderDeliveryById');

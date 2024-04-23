@@ -1,0 +1,20 @@
+POST http://localhost:8000/api/v1/order-deliveries
+Accept: application/json
+Content-Type: application/json
+
+{
+    "client_info": {
+        "client_name": "Boris Britva",
+        "phone": "79100001010",
+        "email": "my_mail@mail.ru"
+    },
+    "order_info": {
+        "order_name": "LEGO star wars",
+        "order_weight": 10.10
+    },
+    "status": "picked_up",
+    "current_location": "Moscow",
+    "need_notify": true,
+    "created_at": "2024-04-11T14:04:40.000000Z",
+    "updated_at": "2024-04-11T14:04:40.000000Z"
+}
