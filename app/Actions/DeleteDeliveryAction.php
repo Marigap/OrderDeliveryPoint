@@ -11,7 +11,6 @@ class DeleteDeliveryAction
 
     public function handle($deliveryId)
     {
-        // TODO: add return
-        DeliveryInfo::findOrFail($deliveryId)->delete();
+        return DeliveryInfo::findOrFail($deliveryId)->delete();
     }
 }

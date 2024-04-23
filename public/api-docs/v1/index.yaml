@@ -32,7 +32,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/DeliveryInfos"
         'default':
-          description: Unexpected status code received
+          description: Unexpected error
           content:
             application/json:
               schema:
@@ -62,7 +62,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
         'default':
-          description: Unexpected status code received
+          description: Unexpected error
           content:
             application/json:
               schema:
@@ -100,7 +100,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
         'default':
-          description: Unexpected status code received
+          description: Unexpected error
           content:
             application/json:
               schema:
@@ -148,7 +148,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
         'default':
-          description: Unexpected status code received
+          description: Unexpected error
           content:
             application/json:
               schema:
@@ -180,7 +180,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
         'default':
-          description: Unexpected status code received
+          description: Unexpected error
           content:
             application/json:
               schema:
